@@ -1,3 +1,6 @@
+// Предотвращаем статическое пререндеринг этой страницы
+export const dynamic = 'force-dynamic'
+
 import { CategoryForm } from '@/components/admin/CategoryForm'
 
 export default function NewCategoryPage() {

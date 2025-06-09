@@ -1,3 +1,6 @@
+// Предотвращаем статическое пререндеринг этой страницы
+export const dynamic = 'force-dynamic'
+
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'

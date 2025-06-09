@@ -1,3 +1,6 @@
+// Предотвращаем статическое пререндеринг этой страницы
+export const dynamic = 'force-dynamic'
+
 import { ArticleForm } from '@/components/admin/ArticleForm'
 import { prisma } from '@/lib/prisma'
 
