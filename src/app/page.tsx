@@ -3,9 +3,33 @@ import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 
+type CategoryWithArticles = {
+  id: string
+  name: string
+  articles: Array<{
+    id: string
+    title: string
+    slug: string
+    createdAt: Date
+  }>
+}
+
+type ArticleWithCategory = {
+  id: string
+  title: string
+  slug: string
+  content: string
+  author: string
+  createdAt: Date
+  category: {
+    id: string
+    name: string
+  }
+}
+
 export default async function HomePage() {
-  let categories: any[] = []
-  let recentArticles: any[] = []
+  let categories: CategoryWithArticles[] = []
+  let recentArticles: ArticleWithCategory[] = []
 
   try {
     categories = await prisma.category.findMany({
@@ -24,7 +48,7 @@ export default async function HomePage() {
         category: true
       }
     })
-  } catch (error) {
+  } catch (_) {
     console.warn('Database not available, using empty data')
   }
 

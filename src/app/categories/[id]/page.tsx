@@ -20,7 +20,7 @@ export async function generateStaticParams() {
     return categories.map((category) => ({
       id: category.id
     }))
-  } catch (error) {
+  } catch (_) {
     // Fallback if database is not available during build
     console.warn('Database not available during build, using empty static params')
     return []
