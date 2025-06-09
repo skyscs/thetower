@@ -4,22 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { prisma } from '@/lib/prisma'
 
 export default async function HomePage() {
-  const categories = await prisma.category.findMany({
-    include: {
-      articles: {
-        take: 3,
-        orderBy: { createdAt: 'desc' }
-      }
-    }
-  })
+  let categories: any[] = []
+  let recentArticles: any[] = []
 
-  const recentArticles = await prisma.article.findMany({
-    take: 6,
-    orderBy: { createdAt: 'desc' },
-    include: {
-      category: true
-    }
-  })
+  try {
+    categories = await prisma.category.findMany({
+      include: {
+        articles: {
+          take: 3,
+          orderBy: { createdAt: 'desc' }
+        }
+      }
+    })
+
+    recentArticles = await prisma.article.findMany({
+      take: 6,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        category: true
+      }
+    })
+  } catch (error) {
+    console.warn('Database not available, using empty data')
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

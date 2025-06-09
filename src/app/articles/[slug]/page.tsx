@@ -10,17 +10,26 @@ interface ArticlePageProps {
   }>
 }
 
-export async function generateStaticParams() {
-  const articles = await prisma.article.findMany({
-    select: {
-      slug: true
-    }
-  })
+// Полностью динамическая страница
+export const dynamic = 'force-dynamic'
 
-  return articles.map((article) => ({
-    slug: article.slug
-  }))
-}
+// export async function generateStaticParams() {
+//   try {
+//     const articles = await prisma.article.findMany({
+//       select: {
+//         slug: true
+//       }
+//     })
+
+//     return articles.map((article) => ({
+//       slug: article.slug
+//     }))
+//   } catch (error) {
+//     // Fallback if database is not available during build
+//     console.warn('Database not available during build, using empty static params')
+//     return []
+//   }
+// }
 
 export async function generateMetadata({ params }: ArticlePageProps) {
   const { slug } = await params

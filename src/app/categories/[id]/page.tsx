@@ -10,15 +10,21 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({
-    select: {
-      id: true
-    }
-  })
+  try {
+    const categories = await prisma.category.findMany({
+      select: {
+        id: true
+      }
+    })
 
-  return categories.map((category) => ({
-    id: category.id
-  }))
+    return categories.map((category) => ({
+      id: category.id
+    }))
+  } catch (error) {
+    // Fallback if database is not available during build
+    console.warn('Database not available during build, using empty static params')
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
