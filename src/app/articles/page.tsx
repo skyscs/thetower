@@ -2,6 +2,10 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 
+// Enable SSG
+export const dynamic = 'force-static'
+export const revalidate = false // Use ISR only with revalidatePath
+
 export const metadata = {
   title: 'Всі статті | Гайди по The Tower Defense Idle',
   description: 'Повний список всіх гайдів та статей по The Tower Defense Idle'

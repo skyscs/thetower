@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
@@ -17,6 +18,9 @@ export async function POST(request: NextRequest) {
     const category = await prisma.category.create({
       data: { name }
     })
+
+    // Revalidate pages where categories are displayed
+    revalidatePath('/', 'page') // Main page
 
     return NextResponse.json(category)
   } catch (_) {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 
 export async function DELETE(
@@ -21,6 +22,10 @@ export async function DELETE(
     await prisma.category.delete({
       where: { id }
     })
+
+    // Revalidate pages where categories are displayed
+    revalidatePath('/', 'page') // Main page
+    revalidatePath(`/categories/${id}`, 'page') // Deleted category page
 
     return NextResponse.json({ success: true })
   } catch (_) {
@@ -52,6 +57,10 @@ export async function PUT(
       where: { id },
       data: { name }
     })
+
+    // Revalidate pages where this category is displayed
+    revalidatePath('/', 'page') // Main page
+    revalidatePath(`/categories/${id}`, 'page') // Category page
 
     return NextResponse.json(category)
   } catch (_) {

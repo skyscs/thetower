@@ -10,26 +10,27 @@ interface ArticlePageProps {
   }>
 }
 
-// Полностью динамическая страница
-export const dynamic = 'force-dynamic'
+// Enable SSG
+export const dynamic = 'force-static'
+export const revalidate = false // Use ISR only with revalidatePath
 
-// export async function generateStaticParams() {
-//   try {
-//     const articles = await prisma.article.findMany({
-//       select: {
-//         slug: true
-//       }
-//     })
+export async function generateStaticParams() {
+  try {
+    const articles = await prisma.article.findMany({
+      select: {
+        slug: true
+      }
+    })
 
-//     return articles.map((article) => ({
-//       slug: article.slug
-//     }))
-//   } catch (error) {
-//     // Fallback if database is not available during build
-//     console.warn('Database not available during build, using empty static params')
-//     return []
-//   }
-// }
+    return articles.map((article) => ({
+      slug: article.slug
+    }))
+  } catch (_) {
+    // Fallback if database is not available during build
+    console.warn('Database not available during build, using empty static params')
+    return []
+  }
+}
 
 export async function generateMetadata({ params }: ArticlePageProps) {
   const { slug } = await params

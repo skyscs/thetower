@@ -3,6 +3,10 @@ import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
 
+// Enable SSG
+export const dynamic = 'force-static'
+export const revalidate = false // Use ISR only with revalidatePath
+
 type CategoryWithArticles = {
   id: string
   name: string

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
@@ -23,6 +24,12 @@ export async function POST(request: NextRequest) {
         slug
       }
     })
+
+    // Revalidate pages where this article may appear
+    revalidatePath('/', 'page') // Main page
+    revalidatePath('/articles', 'page') // All articles page
+    revalidatePath(`/categories/${categoryId}`, 'page') // Category page
+    revalidatePath(`/articles/${slug}`, 'page') // New article page
 
     return NextResponse.json(article)
   } catch (_) {
@@ -56,6 +63,12 @@ export async function PUT(request: NextRequest) {
         slug
       }
     })
+
+    // Revalidate pages where this article may appear
+    revalidatePath('/', 'page') // Main page
+    revalidatePath('/articles', 'page') // All articles page
+    revalidatePath(`/categories/${categoryId}`, 'page') // Category page
+    revalidatePath(`/articles/${slug}`, 'page') // Updated article page
 
     return NextResponse.json(article)
   } catch (_) {

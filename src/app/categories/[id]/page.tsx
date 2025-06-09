@@ -9,6 +9,10 @@ interface CategoryPageProps {
   }>
 }
 
+// Enable SSG
+export const dynamic = 'force-static'
+export const revalidate = false // Use ISR only with revalidatePath
+
 export async function generateStaticParams() {
   try {
     const categories = await prisma.category.findMany({
